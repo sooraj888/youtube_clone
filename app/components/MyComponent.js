@@ -8,8 +8,9 @@ import {
   Alert,
 } from 'react-native';
 
-const MyComponent = () => {
+const MyComponent = ({isPageFocused}) => {
   const scrollViewRef = useRef(null);
+  const scollPosition = useRef(0);
   const headerViewRef = useRef();
   const scrolling = useRef(new Animated.Value(0)).current;
 
@@ -19,9 +20,30 @@ const MyComponent = () => {
   const translation = diffClamp.interpolate({
     inputRange: [0, 100],
     outputRange: [0, -100],
-    // extrapolate: 'clamp',
+
+    // useNativeDriver: true,
   });
-  const translationOnHalf = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    setTimeout(() => {
+      headerViewRef.current?.measureInWindow((fx, fy) => {
+        console.log(fy);
+      });
+    }, 500);
+
+    if (isPageFocused) {
+      headerViewRef.current?.measureInWindow((fx, fy) => {
+        console.log(fy);
+        if (fy == -100) {
+          scrollViewRef.current?.scrollTo({
+            x: 0,
+            y: scollPosition.current - 100,
+            animated: true,
+          });
+        }
+      });
+    }
+  }, [isPageFocused]);
 
   return (
     <View style={styles.container}>
@@ -39,11 +61,8 @@ const MyComponent = () => {
             height: 100,
             elevation: 4,
             zIndex: 4,
-            // backgroundColor: 'tomato',
             transform: [{translateY: translation}],
           },
-          // ,
-          // {transform: [{translateY: translationOnHalf}]},
         ]}>
         <View
           style={{backgroundColor: 'red', height: '50%', width: '100%'}}></View>
@@ -55,17 +74,21 @@ const MyComponent = () => {
           }}></View>
       </Animated.View>
       <Animated.ScrollView
-        bounces={false}
+        // onScroll={{}}
+        bounces={true}
         ref={scrollViewRef}
         style={[styles.scrollView]}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrolling}}}],
           {
-            useNativeDriver: true,
+            useNativeDriver: false,
+            listener: event => {
+              scollPosition.current = event.nativeEvent?.contentOffset?.y;
+            },
           },
         )}
         scrollEventThrottle={16}
-        onScrollEndDrag={e => {
+        onMomentumScrollEnd={e => {
           const currentScrollY = e?.nativeEvent?.contentOffset?.y;
           headerViewRef.current?.measureInWindow((fx, fy) => {
             if ((fy < -50 && fy > -75) || fy == -75) {
@@ -75,10 +98,21 @@ const MyComponent = () => {
                 animated: true,
               });
             } else if (fy < -75 && fy > -100) {
-              console.log(fy + 100);
               scrollViewRef.current?.scrollTo({
                 x: 0,
                 y: currentScrollY + (fy + 100),
+                animated: true,
+              });
+            } else if (fy <= -1 && fy > -25) {
+              scrollViewRef.current?.scrollTo({
+                x: 0,
+                y: currentScrollY - (fy + 50),
+                animated: true,
+              });
+            } else if (fy < -25 && fy > -75) {
+              scrollViewRef.current?.scrollTo({
+                x: 0,
+                y: currentScrollY + (fy + 50),
                 animated: true,
               });
             }
