@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   Alert,
+  Image,
 } from 'react-native';
 
 const MyComponent = ({isPageFocused}) => {
@@ -65,7 +66,101 @@ const MyComponent = ({isPageFocused}) => {
           },
         ]}>
         <View
-          style={{backgroundColor: 'red', height: '50%', width: '100%'}}></View>
+          style={{
+            backgroundColor: 'white',
+            height: '50%',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View
+            style={[
+              {
+                // backgroundColor: 'gray',
+                width: '30%',
+                height: '100%',
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'row',
+              },
+            ]}>
+            <Image
+              source={{
+                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKPCRYnkX0JVZeJnPue73Kwd_8FjPi0bUpfpla4xHf7oEPqU9O23-i5y7xNnJ5dSs8Qlw&usqp=CAU',
+              }}
+              style={{width: 30, height: 30, marginLeft: 10}}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                marginLeft: 3,
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'black',
+              }}>
+              YouTube
+            </Text>
+          </View>
+          <View
+            style={[
+              {
+                width: '70%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              },
+            ]}>
+            <View
+              style={[
+                {
+                  backgroundColor: 'pink',
+                  width: 50,
+                  height: '100%',
+                },
+              ]}></View>
+            <View
+              style={[
+                {
+                  backgroundColor: 'pink',
+                  width: 50,
+                  height: '100%',
+                },
+              ]}></View>
+            <View
+              style={[
+                {
+                  backgroundColor: 'pink',
+                  width: 50,
+                  height: '100%',
+                },
+              ]}></View>
+            <View
+              style={[
+                {
+                  width: 50,
+                  height: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+              ]}>
+              <View
+                style={[
+                  {
+                    backgroundColor: 'green',
+                    width: 26,
+                    height: 26,
+                    borderRadius: 30,
+                  },
+                  styles.center,
+                ]}>
+                <Text style={{color: 'white', fontSize: 12}}>S</Text>
+              </View>
+            </View>
+          </View>
+        </View>
         <View
           style={{
             backgroundColor: 'green',
@@ -120,32 +215,16 @@ const MyComponent = ({isPageFocused}) => {
         }}>
         {/* Content goes here */}
 
-        <View style={{height: 7100, width: 200, flex: 1}}>
-          <Text>aaaaaa</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
-          <Text>sfdsdfhsdkh</Text>
+        <View
+          style={{
+            width: '100%',
+            flex: 1,
+            paddingBottom: 120,
+            alignItems: 'center',
+          }}>
+          {new Array(50).fill(' ').map((item, index) => {
+            return <Text key={index}>{index + 1}</Text>;
+          })}
         </View>
       </Animated.ScrollView>
     </View>
@@ -160,6 +239,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     paddingTop: 100,
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
