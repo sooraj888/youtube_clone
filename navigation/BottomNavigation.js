@@ -1,20 +1,24 @@
 import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/stack_navigation_screens/HomeScreen';
-import ProfileScreen from '../screens/stack_navigation_screens/ProfileScreen';
+import HomeScreen from '../screens/bottomNavigation_screens/HomeScreen';
+import ProfileScreen from '../screens/bottomNavigation_screens/ProfileScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Alert, View} from 'react-native';
 import {ThemeContext} from '../App';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import NestedScreen from './NestedNavigation';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const BottomNavigation = () => {
   const {theme} = React.useContext(ThemeContext);
 
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarInactiveTintColor: 'black',
@@ -26,7 +30,7 @@ const BottomNavigation = () => {
       }}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreenStack}
         options={{
           tabBarLabel: 'Home',
 
@@ -44,7 +48,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="Shorts"
-        component={ProfileScreen}
+        component={ShortsScreenStack}
         options={{
           tabBarLabel: 'Shorts',
           tabBarIcon: ({color, size, focused}) => {
@@ -60,6 +64,7 @@ const BottomNavigation = () => {
           },
         }}
       />
+
       <Tab.Screen
         name="Create"
         component={ProfileScreen}
@@ -130,3 +135,25 @@ const BottomNavigation = () => {
 };
 
 export default BottomNavigation;
+
+const HomeScreenStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="HomeScreenMain"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="HomeScreenMain" component={HomeScreen} />
+      <Stack.Screen name="NestedScreenHome" component={NestedScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const ShortsScreenStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="ShortsScreenScreenMain"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="ShortsScreenScreenMain" component={ProfileScreen} />
+      <Stack.Screen name="NestedScreenShorts" component={NestedScreen} />
+    </Stack.Navigator>
+  );
+};

@@ -7,7 +7,7 @@ const HomeScreen = ({}) => {
   const isPageFocused = useIsFocused();
   return (
     <View style={{height: '100%'}}>
-      <HomeScreenHeader isPageFocused={isPageFocused}></HomeScreenHeader>
+      <HomeScreenHeader isPageFocused={isPageFocused}> </HomeScreenHeader>
     </View>
   );
 };

@@ -8,11 +8,13 @@
 import React, {createContext, useEffect, useState} from 'react';
 
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -21,12 +23,21 @@ import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
+  useNavigation,
+  useRoute,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ProfileScreen from './screens/stack_navigation_screens/ProfileScreen';
-import HomeScreen from './screens/stack_navigation_screens/HomeScreen';
+import ProfileScreen from './screens/bottomNavigation_screens/ProfileScreen';
+import HomeScreen from './screens/bottomNavigation_screens/HomeScreen';
 import BottomNavigation from './navigation/BottomNavigation';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
+import StackNavigation from './navigation/StackNavigation';
+import DrawerView from './app/components/DrawerView';
+import {currentRoutName, navigationRef} from './app/components/RootNavigation';
+const Drawer = createDrawerNavigator();
+
 export const ThemeContext = createContext();
 
 function App() {
@@ -42,19 +53,32 @@ function App() {
     }
   }, [theme]);
 
+  const getActiveRouteName = state => {
+    return (
+      state?.routes?.[0]?.state?.routes?.[0]?.state?.routes?.[
+        state.routes?.[0]?.state?.routes?.[0]?.state?.index
+      ]?.name || 'Home'
+    );
+  };
+
   return (
     <ThemeContext.Provider value={themeData}>
       <StatusBar
         backgroundColor={theme == 'Light' ? 'white' : 'black'}
         barStyle={theme == 'Light' ? 'dark-content' : 'light-content'}
       />
-      <NavigationContainer theme={theme == 'Light' ? DefaultTheme : DarkTheme}>
-        <Stack.Navigator
-          initialRouteName="MainScreen"
+      <NavigationContainer
+        ref={navigationRef}
+        onStateChange={state => {
+          currentRoutName.current = getActiveRouteName(state);
+          // console.log(JSON.stringify(getActiveRouteName(state)));
+        }}
+        theme={theme == 'Light' ? DefaultTheme : DarkTheme}>
+        <Drawer.Navigator
+          drawerContent={props => <DrawerView {...props} />}
           screenOptions={{headerShown: false}}>
-          <Stack.Screen name="MainScreen" component={BottomNavigation} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
+          <Drawer.Screen name="StackNavigation" component={StackNavigation} />
+        </Drawer.Navigator>
       </NavigationContainer>
     </ThemeContext.Provider>
   );

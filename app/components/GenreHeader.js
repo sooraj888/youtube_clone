@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
@@ -23,6 +24,7 @@ const genres = [
   'Motorcycle',
 ];
 const GenreHeader = ({genersData, onSelectedGenre}) => {
+  const navigation = useNavigation();
   const [slectedGenre, setSelectedGenre] = useState(0);
   return (
     <View
@@ -44,7 +46,10 @@ const GenreHeader = ({genersData, onSelectedGenre}) => {
             justifyContent: 'center',
             display: 'flex',
           }}>
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              navigation.openDrawer();
+            }}
             style={{
               height: 30,
               justifyContent: 'center',
@@ -55,7 +60,7 @@ const GenreHeader = ({genersData, onSelectedGenre}) => {
             <View>
               <Ionicons name={'compass-outline'} size={25} color={'black'} />
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         {genres.map((item, index) => {
           return (
