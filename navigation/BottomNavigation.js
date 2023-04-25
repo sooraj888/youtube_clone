@@ -10,11 +10,10 @@ import {ThemeContext} from '../App';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NestedScreen from './NestedNavigation';
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
 const BottomNavigation = () => {
-  const {theme} = React.useContext(ThemeContext);
+  const {theme} = React?.useContext(ThemeContext);
+  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
 
   return (
     <Tab.Navigator
@@ -27,13 +26,13 @@ const BottomNavigation = () => {
         tabBarStyle: {
           backgroundColor: theme == 'Dark' ? 'black' : 'white',
         },
+        tabBarLabelPosition: 'below-icon',
       }}>
       <Tab.Screen
         name="Home"
         component={HomeScreenStack}
         options={{
           tabBarLabel: 'Home',
-
           tabBarIcon: ({color, size, focused}) =>
             focused ? (
               <Ionicons
@@ -104,7 +103,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="Subscription"
-        component={ProfileScreen}
+        component={SubscriptionScreenStack}
         options={{
           tabBarLabel: 'Subscription',
           tabBarIcon: ({color, size, focused}) => (
@@ -118,7 +117,7 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="Library"
-        component={ProfileScreen}
+        component={LibraryScreenStack}
         options={{
           tabBarLabel: 'Library',
           tabBarIcon: ({color, size, focused}) => (
@@ -137,6 +136,7 @@ const BottomNavigation = () => {
 export default BottomNavigation;
 
 const HomeScreenStack = () => {
+  const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
       initialRouteName="HomeScreenMain"
@@ -148,12 +148,37 @@ const HomeScreenStack = () => {
 };
 
 const ShortsScreenStack = () => {
+  const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
       initialRouteName="ShortsScreenScreenMain"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="ShortsScreenScreenMain" component={ProfileScreen} />
       <Stack.Screen name="NestedScreenShorts" component={NestedScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const SubscriptionScreenStack = () => {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator
+      initialRouteName="ShortsScreenScreenMain"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="SubscriptionScreenMain" component={ProfileScreen} />
+      <Stack.Screen name="NestedScreenSubscription" component={NestedScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const LibraryScreenStack = () => {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator
+      initialRouteName="LibraryScreenScreenMain"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="LibraryScreenMain" component={ProfileScreen} />
+      <Stack.Screen name="NestedScreenLibrary" component={NestedScreen} />
     </Stack.Navigator>
   );
 };

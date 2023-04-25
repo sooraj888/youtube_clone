@@ -32,7 +32,7 @@ import HomeScreen from './screens/bottomNavigation_screens/HomeScreen';
 import BottomNavigation from './navigation/BottomNavigation';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import 'react-native-gesture-handler';
+
 import StackNavigation from './navigation/StackNavigation';
 import DrawerView from './app/components/DrawerView';
 import {currentRoutName, navigationRef} from './app/components/RootNavigation';
@@ -42,9 +42,9 @@ export const ThemeContext = createContext();
 
 function App() {
   const [theme, setTheme] = useState('Light');
-
   const themeData = {theme, setTheme};
-  const Stack = createNativeStackNavigator();
+  // const Stack = createNativeStackNavigator();
+
   useEffect(() => {
     if (theme == 'Dark') {
       changeNavigationBarColor('black');
@@ -52,14 +52,6 @@ function App() {
       changeNavigationBarColor('white');
     }
   }, [theme]);
-
-  const getActiveRouteName = state => {
-    return (
-      state?.routes?.[0]?.state?.routes?.[0]?.state?.routes?.[
-        state.routes?.[0]?.state?.routes?.[0]?.state?.index
-      ]?.name || 'Home'
-    );
-  };
 
   return (
     <ThemeContext.Provider value={themeData}>
@@ -84,6 +76,15 @@ function App() {
   );
 }
 
+export default App;
+
+const getActiveRouteName = state => {
+  return (
+    state?.routes?.[0]?.state?.routes?.[0]?.state?.routes?.[
+      state.routes?.[0]?.state?.routes?.[0]?.state?.index
+    ]?.name || 'Home'
+  );
+};
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
@@ -102,5 +103,3 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-
-export default App;
