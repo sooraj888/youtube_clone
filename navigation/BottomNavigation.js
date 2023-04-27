@@ -13,11 +13,11 @@ import NestedScreen from './NestedNavigation';
 const BottomNavigation = () => {
   const {theme} = React?.useContext(ThemeContext);
   const Tab = createBottomTabNavigator();
-  const Stack = createNativeStackNavigator();
 
   return (
     <Tab.Navigator
       initialRouteName="Home"
+      backBehavior="history"
       screenOptions={{
         headerShown: false,
         tabBarInactiveTintColor: 'black',

@@ -12,7 +12,7 @@ export default StackNavigation = () => {
       initialRouteName="MainScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="MainScreen" component={BottomNavigation} />
-      {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

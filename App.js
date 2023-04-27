@@ -39,6 +39,9 @@ import {currentRoutName, navigationRef} from './app/components/RootNavigation';
 const Drawer = createDrawerNavigator();
 
 export const ThemeContext = createContext();
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
 
 function App() {
   const [theme, setTheme] = useState('Light');
