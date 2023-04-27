@@ -28,14 +28,11 @@ const HomeScreenHeader = ({isPageFocused}) => {
 
   useEffect(() => {
     setTimeout(() => {
-      headerViewRef.current?.measureInWindow((fx, fy) => {
-        console.log(fy);
-      });
+      headerViewRef.current?.measureInWindow((fx, fy) => {});
     }, 500);
 
     if (isPageFocused) {
       headerViewRef.current?.measureInWindow((fx, fy) => {
-        console.log(fy);
         if (fy == -100) {
           scrollViewRef.current?.scrollTo({
             x: 0,
