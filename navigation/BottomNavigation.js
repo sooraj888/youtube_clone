@@ -5,10 +5,11 @@ import ProfileScreen from '../screens/bottomNavigation_screens/ProfileScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Alert, View} from 'react-native';
+import {Alert, TouchableHighlight, View} from 'react-native';
 import {ThemeContext} from '../App';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NestedScreen from './NestedNavigation';
+import {TouchableOpacity} from 'react-native';
 
 const BottomNavigation = () => {
   const {theme} = React?.useContext(ThemeContext);
@@ -71,34 +72,26 @@ const BottomNavigation = () => {
           tabBarLabelStyle: {
             display: 'none',
           },
-          focused: false,
-          tabBarIcon: ({color, size, focused}) => {
-            return (
-              <View
-                style={{
-                  zIndex: 100,
-                  zIndex: 10,
-                  width: 45,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {focused ? (
-                  <Ionicons
-                    name="md-add-circle"
-                    size={45}
-                    color={theme == 'Dark' ? 'white' : 'black'}
-                  />
-                ) : (
-                  <Ionicons
-                    name="ios-add-circle-outline"
-                    size={45}
-                    color={'gray'}
-                  />
-                )}
-              </View>
-            );
-          },
+          tabBarButton: ({style}) => (
+            <TouchableHighlight
+              underlayColor={'rgba(0, 0, 0, 0.1)'}
+              style={[style, {borderRadius: 100}]}
+              onPress={() => {}}>
+              {false ? (
+                <Ionicons
+                  name="md-add-circle"
+                  size={45}
+                  color={theme == 'Dark' ? 'white' : 'black'}
+                />
+              ) : (
+                <Ionicons
+                  name="ios-add-circle-outline"
+                  size={45}
+                  color={'gray'}
+                />
+              )}
+            </TouchableHighlight>
+          ),
         }}
       />
       <Tab.Screen
