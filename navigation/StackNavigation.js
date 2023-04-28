@@ -9,12 +9,6 @@ export default StackNavigation = () => {
 
   return (
     <>
-      <View
-        style={{
-          height: StatusBar?.currentHeight,
-          width: '100%',
-          backgroundColor: 'white',
-        }}></View>
       <Stack.Navigator
         initialRouteName="MainScreen"
         screenOptions={{headerShown: false}}>

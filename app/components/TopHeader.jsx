@@ -20,8 +20,6 @@ const TopHeader = () => {
         height: '50%',
         width: '100%',
         display: 'flex',
-        // justifyContent: 'space-around',
-        paddingTop: 5,
         flexDirection: 'row',
       }}>
       <View
@@ -32,9 +30,10 @@ const TopHeader = () => {
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
+            // backgroundColor: 'red',
           },
         ]}>
-        <AppIcon width={30} height={30} marginLeft={15} scale={2} />
+        <AppIcon width={30} height={30} marginLeft={18} scale={1} />
         <Text
           style={{
             marginLeft: 5,

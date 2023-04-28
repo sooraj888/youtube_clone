@@ -45,7 +45,7 @@ const BottomNavigation = ({navigation}) => {
     if (index == -1) {
       setIsBottomSheetOpend(false);
       backgroundViewRef?.current?.setNativeProps({style: {display: 'none'}});
-      StatusBar.setBackgroundColor('white');
+      // StatusBar.setBackgroundColor('white');
     }
   }, []);
 
@@ -71,6 +71,12 @@ const BottomNavigation = ({navigation}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <View
+        style={{
+          height: StatusBar?.currentHeight,
+          width: '100%',
+          backgroundColor: 'rgba(0,0,0,0)',
+        }}></View>
       <Tab.Navigator
         initialRouteName="Home"
         backBehavior="history"
@@ -132,14 +138,14 @@ const BottomNavigation = ({navigation}) => {
                 underlayColor={'rgba(0, 0, 0, 0.1)'}
                 style={[style, {borderRadius: 100}]}
                 onPress={() => {
+                  // setTimeout(() => {
+                  //   StatusBar.setBackgroundColor('rgba(0,0,0,0.4)');
+                  // }, 0);
                   backgroundViewRef?.current.setNativeProps({
                     style: {display: 'flex'},
                   });
                   setIsBottomSheetOpend(true);
                   bottomSheetRef?.current?.snapToIndex(0);
-                  setTimeout(() => {
-                    StatusBar.setBackgroundColor('rgba(0,0,0,0.4)');
-                  }, 0);
                 }}>
                 {false ? (
                   <Ionicons
@@ -194,7 +200,7 @@ const BottomNavigation = ({navigation}) => {
             style: {display: 'none'},
           });
           setTimeout(() => {
-            StatusBar.setBackgroundColor('white');
+            // StatusBar.setBackgroundColor('white');
           }, 0);
         }}>
         <View
@@ -203,10 +209,10 @@ const BottomNavigation = ({navigation}) => {
             // flex: 1,
             backgroundColor: 'rgba(0,0,0,0.4)',
             position: 'absolute',
-            // zIndex: 1,
+            // zIndex: 50,
             left: 0,
             right: 0,
-            top: -30,
+            top: -500,
             bottom: 0,
           }}></View>
       </TapGestureHandler>

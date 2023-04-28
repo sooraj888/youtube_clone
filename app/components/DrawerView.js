@@ -61,24 +61,28 @@ export default DrawerView = () => {
     });
   };
   return (
-    <View style={{zIndex: 20, paddingTop: StatusBar?.currentHeight}}>
+    <View
+      style={{
+        zIndex: 20,
+        paddingTop: StatusBar?.currentHeight,
+      }}>
       <View style={[styles.sideMenueHeader]}>
         <View
           style={{
-            // backgroundColor: 'gray',
-            marginLeft: 15,
             marginTop: 10,
             display: 'flex',
             flexDirection: 'row',
+
+            // paddingTop: 5,
           }}>
-          <AppIcon height={30} width={30} scale={2} paddingLeft={5} />
+          <AppIcon height={30} width={30} scale={1} marginLeft={18} />
           <Text
             style={{
               marginLeft: 5,
               fontSize: 18,
               fontWeight: 'bold',
               color: 'black',
-              marginBottom: 2,
+              // marginBottom: 2,
             }}>
             YouTube
           </Text>
@@ -144,6 +148,7 @@ const styles = StyleSheet.create({
     height: 60,
     zIndex: 25,
     // backgroundColor: 'red',
+    backgroundColor: 'transparent',
   },
   menuOptionContainer: {
     width: '100%',
