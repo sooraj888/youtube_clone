@@ -43,12 +43,9 @@ const BottomNavigation = ({navigation}) => {
   // callbacks
   const handleSheetChanges = useCallback(index => {
     if (index == -1) {
-      StatusBar.setBackgroundColor('#FFFFFF');
+      setIsBottomSheetOpend(false);
       backgroundViewRef?.current?.setNativeProps({style: {display: 'none'}});
-    } else {
-      setIsBottomSheetOpend(true);
-      StatusBar?.setBackgroundColor('rgba(0,0,0,0.4)');
-      backgroundViewRef?.current.setNativeProps({style: {display: 'flex'}});
+      StatusBar.setBackgroundColor('white');
     }
   }, []);
 
@@ -135,7 +132,14 @@ const BottomNavigation = ({navigation}) => {
                 underlayColor={'rgba(0, 0, 0, 0.1)'}
                 style={[style, {borderRadius: 100}]}
                 onPress={() => {
+                  backgroundViewRef?.current.setNativeProps({
+                    style: {display: 'flex'},
+                  });
+                  setIsBottomSheetOpend(true);
                   bottomSheetRef?.current?.snapToIndex(0);
+                  setTimeout(() => {
+                    StatusBar.setBackgroundColor('rgba(0,0,0,0.4)');
+                  }, 0);
                 }}>
                 {false ? (
                   <Ionicons
@@ -186,11 +190,17 @@ const BottomNavigation = ({navigation}) => {
       <TapGestureHandler
         onHandlerStateChange={() => {
           bottomSheetRef.current.close();
+          backgroundViewRef?.current?.setNativeProps({
+            style: {display: 'none'},
+          });
+          setTimeout(() => {
+            StatusBar.setBackgroundColor('white');
+          }, 0);
         }}>
         <View
           ref={backgroundViewRef}
           style={{
-            flex: 1,
+            // flex: 1,
             backgroundColor: 'rgba(0,0,0,0.4)',
             position: 'absolute',
             // zIndex: 1,

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  StatusBar,
 } from 'react-native';
 import React from 'react';
 import {
@@ -60,20 +61,20 @@ export default DrawerView = () => {
     });
   };
   return (
-    <View>
+    <View style={{zIndex: 20, paddingTop: StatusBar?.currentHeight}}>
       <View style={[styles.sideMenueHeader]}>
         <View
           style={{
             // backgroundColor: 'gray',
-            marginLeft: 10,
-            marginTop: 15,
+            marginLeft: 15,
+            marginTop: 10,
             display: 'flex',
             flexDirection: 'row',
           }}>
           <AppIcon height={30} width={30} scale={2} paddingLeft={5} />
           <Text
             style={{
-              marginLeft: 3,
+              marginLeft: 5,
               fontSize: 18,
               fontWeight: 'bold',
               color: 'black',
@@ -141,6 +142,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     width: '100%',
     height: 60,
+    zIndex: 25,
     // backgroundColor: 'red',
   },
   menuOptionContainer: {
@@ -149,6 +151,7 @@ const styles = StyleSheet.create({
   optionsButton: {
     paddingLeft: 10,
     paddingVertical: 10,
+
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

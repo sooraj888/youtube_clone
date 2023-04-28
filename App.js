@@ -59,12 +59,12 @@ function App() {
   return (
     <ThemeContext.Provider value={themeData}>
       <StatusBar
-        // translucent={true}
+        translucent={true}
         // animated={false}
-        backgroundColor={'#FFFFFF'}
+        backgroundColor={'rgba(0,0,0,0)'}
         barStyle={theme == 'Light' ? 'dark-content' : 'light-content'}
       />
-      {/* <View styles={{height: 40, backgroundColor: 'red', width: '100%'}}></View> */}
+
       <NavigationContainer
         ref={navigationRef}
         onStateChange={state => {

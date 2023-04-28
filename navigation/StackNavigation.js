@@ -1,4 +1,4 @@
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, StatusBar} from 'react-native';
 import React, {Component} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomNavigation from './BottomNavigation';
@@ -8,12 +8,20 @@ export default StackNavigation = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator
-      initialRouteName="MainScreen"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="MainScreen" component={BottomNavigation} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-    </Stack.Navigator>
+    <>
+      <View
+        style={{
+          height: StatusBar?.currentHeight,
+          width: '100%',
+          backgroundColor: 'white',
+        }}></View>
+      <Stack.Navigator
+        initialRouteName="MainScreen"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="MainScreen" component={BottomNavigation} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </>
   );
 };
 

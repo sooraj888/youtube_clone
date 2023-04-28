@@ -59,7 +59,7 @@ const HomeScreenHeader = ({isPageFocused}) => {
             left: 0,
             right: 0,
             height: 100,
-            elevation: 4,
+            // elevation: 4,
             zIndex: 4,
             transform: [{translateY: translation}],
           },

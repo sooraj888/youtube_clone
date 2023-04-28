@@ -37,7 +37,7 @@ const TopHeader = () => {
         <AppIcon width={30} height={30} marginLeft={15} scale={2} />
         <Text
           style={{
-            marginLeft: 3,
+            marginLeft: 5,
             fontSize: 18,
             fontWeight: 'bold',
             color: 'black',
