@@ -13,7 +13,7 @@ import {
   useLinkBuilder,
   useTheme,
 } from '@react-navigation/native';
-import React, {useRef} from 'react';
+import React, {createRef, useRef} from 'react';
 import {
   Alert,
   Animated,
@@ -36,7 +36,12 @@ import {EdgeInsets, useSafeAreaFrame} from 'react-native-safe-area-context';
 import useIsKeyboardShown from '@react-navigation/bottom-tabs/src/utils/useIsKeyboardShown';
 import BottomTabItem from '@react-navigation/bottom-tabs/src/views/BottomTabItem';
 import DeviceInfo from 'react-native-device-info';
+import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
+import VideoScreen from './VideoScreen';
 
+export const videoScrenRef = createRef();
+export let heightAnimation: any = createRef().current;
+heightAnimation = new Animated.Value(0);
 type Props = BottomTabBarProps & {
   style?: Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
 };
@@ -265,51 +270,28 @@ export default function BottomTabBar({
   });
 
   const tabBarBackgroundElement = tabBarBackground?.();
-  const heightAnimation = useRef(new Animated.Value(50)).current;
+  // const heightAnimation = useRef(new Animated.Value(50)).current;
   const StatusBarHeight = StatusBar?.currentHeight || 0;
   return (
     <>
       <SafeAreaView />
       <Animated.View
+        ref={videoScrenRef}
         style={{
           position: 'absolute',
           left: 0,
           right: 0,
-          bottom: tabBarHeight,
+          bottom: heightAnimation.interpolate({
+            inputRange: [50, WINDOW_HEIGHT],
+            outputRange: [tabBarHeight, 0],
+          }),
           height: heightAnimation,
           backgroundColor: 'rgba(0,0,0,0.6)',
           borderWidth: 5,
           borderColor: 'yellow',
         }}>
         {/* Dimensions.get('window').height - tabBarHeight */}
-        <View style={{width: '100%', display: 'flex', flexDirection: 'row'}}>
-          <Button
-            onPress={() => {
-              Animated.timing(heightAnimation, {
-                toValue:
-                  Dimensions.get('window').height -
-                  tabBarHeight -
-                  (StatusBarHeight >= 30 ? 0 : StatusBarHeight),
-                duration: 500,
-                useNativeDriver: false,
-              }).start();
-            }}
-            title="maximiz"></Button>
-          <Button
-            onPress={() => {
-              Animated.timing(heightAnimation, {
-                toValue: 50,
-                duration: 500,
-                useNativeDriver: false,
-              }).start();
-            }}
-            title="mnimiz"></Button>
-          <Button
-            onPress={() => {
-              Alert.alert(String(StatusBarHeight));
-            }}
-            title="mnimiz"></Button>
-        </View>
+        <VideoScreen heightAnimation={heightAnimation} />
       </Animated.View>
       <Animated.View
         style={[
@@ -327,6 +309,22 @@ export default function BottomTabBar({
                   outputRange: [
                     layout.height + paddingBottom + StyleSheet.hairlineWidth,
                     0,
+                  ],
+                }),
+              },
+            ],
+            // Absolutely position the tab bar so that the content is below it
+            // This is needed to avoid gap at bottom when the tab bar is hidden
+            position: isTabBarHidden ? 'absolute' : (null as any),
+          },
+          {
+            transform: [
+              {
+                translateY: heightAnimation.interpolate({
+                  inputRange: [50, WINDOW_HEIGHT],
+                  outputRange: [
+                    0,
+                    layout.height + paddingBottom + StyleSheet.hairlineWidth,
                   ],
                 }),
               },

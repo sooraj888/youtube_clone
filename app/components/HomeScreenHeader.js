@@ -8,14 +8,18 @@ import {
   Alert,
   Image,
   TouchableHighlight,
+  Dimensions,
+  StatusBar,
 } from 'react-native';
 import TopHeader from './TopHeader';
 
 import GenreHeader from './GenreHeader';
 import {add, getSagaList} from '../redux/action';
 import {useDispatch} from 'react-redux';
+import {heightAnimation, videoScrenRef} from './navigation/BottomTabBar';
 
 const HomeScreenHeader = ({isPageFocused}) => {
+  const StatusBarHeight = StatusBar?.currentHeight || 0;
   const scrollViewRef = useRef(null);
   const scollPosition = useRef(0);
   const headerViewRef = useRef();
@@ -32,8 +36,8 @@ const HomeScreenHeader = ({isPageFocused}) => {
 
   //functions
   const handleAddToCart = value => {
-    // dispatch(add(value));
-    dispatch(getSagaList(value));
+    dispatch(add(value));
+    // dispatch(getSagaList(value));
   };
 
   //hooks
@@ -136,6 +140,16 @@ const HomeScreenHeader = ({isPageFocused}) => {
                 key={index}
                 onPress={() => {
                   handleAddToCart(value);
+                  videoScrenRef?.current?.setNativeProps?.({
+                    style: {display: 'flex'},
+                  });
+                  Animated.timing(heightAnimation, {
+                    toValue:
+                      Dimensions.get('window').height -
+                      (StatusBarHeight >= 30 ? 0 : StatusBarHeight),
+                    duration: 500,
+                    useNativeDriver: false,
+                  }).start();
                   // Alert.alert();
                 }}>
                 <Text>{value}</Text>
