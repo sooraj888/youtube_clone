@@ -7,10 +7,13 @@ import {
   Text,
   Alert,
   Image,
+  TouchableHighlight,
 } from 'react-native';
 import TopHeader from './TopHeader';
 
 import GenreHeader from './GenreHeader';
+import {add, getSagaList} from '../redux/action';
+import {useDispatch} from 'react-redux';
 
 const HomeScreenHeader = ({isPageFocused}) => {
   const scrollViewRef = useRef(null);
@@ -19,6 +22,7 @@ const HomeScreenHeader = ({isPageFocused}) => {
   const scrolling = useRef(new Animated.Value(0)).current;
 
   const [slectedGenre, setSelectedGenre] = useState(0);
+  const dispatch = useDispatch();
 
   const diffClamp = Animated.diffClamp(scrolling, 0, 100);
   const translation = diffClamp.interpolate({
@@ -26,6 +30,13 @@ const HomeScreenHeader = ({isPageFocused}) => {
     outputRange: [0, -100],
   });
 
+  //functions
+  const handleAddToCart = value => {
+    // dispatch(add(value));
+    dispatch(getSagaList(value));
+  };
+
+  //hooks
   useEffect(() => {
     setTimeout(() => {
       headerViewRef.current?.measureInWindow((fx, fy) => {});
@@ -119,8 +130,16 @@ const HomeScreenHeader = ({isPageFocused}) => {
             alignItems: 'center',
           }}>
           {new Array(50).fill(' ').map((item, index) => {
+            const value = (index + 1) * (slectedGenre + 1) * 10;
             return (
-              <Text key={index}>{(index + 1) * (slectedGenre + 1) * 10}</Text>
+              <TouchableHighlight
+                key={index}
+                onPress={() => {
+                  handleAddToCart(value);
+                  // Alert.alert();
+                }}>
+                <Text>{value}</Text>
+              </TouchableHighlight>
             );
           })}
         </View>

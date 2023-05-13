@@ -12,14 +12,19 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AppIcon from './AppIcon';
+import {useSelector} from 'react-redux';
 
 const TopHeader = () => {
+  const addedValue = useSelector(state => state?.reducer);
+  console.log(JSON.stringify(addedValue));
   return (
     <View
       style={{
         height: '50%',
         width: '100%',
         display: 'flex',
+        // justifyContent: 'space-around',
+        paddingTop: 5,
         flexDirection: 'row',
       }}>
       <View
@@ -30,10 +35,9 @@ const TopHeader = () => {
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
-            // backgroundColor: 'red',
           },
         ]}>
-        <AppIcon width={30} height={30} marginLeft={18} scale={1} />
+        <AppIcon width={30} height={30} marginLeft={15} scale={2} />
         <Text
           style={{
             marginLeft: 5,
@@ -111,7 +115,8 @@ const TopHeader = () => {
               },
               styles.center,
             ]}>
-            <Text style={{color: 'white', fontSize: 12}}>S</Text>
+            {/* <Text style={{color: 'white', fontSize: 12}}>S</Text> */}
+            <Text style={{color: 'white', fontSize: 12}}>{addedValue}</Text>
           </View>
         </View>
       </View>

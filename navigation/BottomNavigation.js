@@ -24,6 +24,7 @@ import {Text, StyleSheet} from 'react-native';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
+import BottomTabBar from '../app/components/navigation/BottomTabBar';
 
 const BottomNavigation = ({navigation}) => {
   const {theme} = React?.useContext(ThemeContext);
@@ -45,7 +46,7 @@ const BottomNavigation = ({navigation}) => {
     if (index == -1) {
       setIsBottomSheetOpend(false);
       backgroundViewRef?.current?.setNativeProps({style: {display: 'none'}});
-      // StatusBar.setBackgroundColor('white');
+      StatusBar.setBackgroundColor('white');
     }
   }, []);
 
@@ -71,12 +72,6 @@ const BottomNavigation = ({navigation}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View
-        style={{
-          height: StatusBar?.currentHeight,
-          width: '100%',
-          backgroundColor: 'rgba(0,0,0,0)',
-        }}></View>
       <Tab.Navigator
         initialRouteName="Home"
         backBehavior="history"
@@ -89,7 +84,8 @@ const BottomNavigation = ({navigation}) => {
             backgroundColor: theme == 'Dark' ? 'black' : 'white',
           },
           tabBarLabelPosition: 'below-icon',
-        }}>
+        }}
+        tabBar={props => <BottomTabBar {...props} />}>
         <Tab.Screen
           name="Home"
           component={HomeScreenStack}
@@ -138,14 +134,14 @@ const BottomNavigation = ({navigation}) => {
                 underlayColor={'rgba(0, 0, 0, 0.1)'}
                 style={[style, {borderRadius: 100}]}
                 onPress={() => {
-                  // setTimeout(() => {
-                  //   StatusBar.setBackgroundColor('rgba(0,0,0,0.4)');
-                  // }, 0);
                   backgroundViewRef?.current.setNativeProps({
                     style: {display: 'flex'},
                   });
                   setIsBottomSheetOpend(true);
                   bottomSheetRef?.current?.snapToIndex(0);
+                  setTimeout(() => {
+                    StatusBar.setBackgroundColor('rgba(0,0,0,0.4)');
+                  }, 0);
                 }}>
                 {false ? (
                   <Ionicons
@@ -200,7 +196,7 @@ const BottomNavigation = ({navigation}) => {
             style: {display: 'none'},
           });
           setTimeout(() => {
-            // StatusBar.setBackgroundColor('white');
+            StatusBar.setBackgroundColor('white');
           }, 0);
         }}>
         <View
@@ -209,10 +205,10 @@ const BottomNavigation = ({navigation}) => {
             // flex: 1,
             backgroundColor: 'rgba(0,0,0,0.4)',
             position: 'absolute',
-            // zIndex: 50,
+            // zIndex: 1,
             left: 0,
             right: 0,
-            top: -500,
+            top: -30,
             bottom: 0,
           }}></View>
       </TapGestureHandler>

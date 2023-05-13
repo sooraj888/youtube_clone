@@ -41,6 +41,9 @@ const Drawer = createDrawerNavigator();
 export const ThemeContext = createContext();
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+import store from './app/redux/store';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
 const Tab = createBottomTabNavigator();
 
 function App() {
@@ -58,26 +61,22 @@ function App() {
 
   return (
     <ThemeContext.Provider value={themeData}>
-      <StatusBar
-        translucent={true}
-        // animated={false}
-        backgroundColor={'rgba(0,0,0,0)'}
-        barStyle={theme == 'Light' ? 'dark-content' : 'light-content'}
-      />
-
-      <NavigationContainer
-        ref={navigationRef}
-        onStateChange={state => {
-          currentRoutName.current = getActiveRouteName(state);
-          // console.log(JSON.stringify(getActiveRouteName(state)));
-        }}
-        theme={theme == 'Light' ? DefaultTheme : DarkTheme}>
-        <Drawer.Navigator
-          drawerContent={props => <DrawerView {...props} />}
-          screenOptions={{headerShown: false}}>
-          <Drawer.Screen name="StackNavigation" component={StackNavigation} />
-        </Drawer.Navigator>
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer
+          ref={navigationRef}
+          onStateChange={state => {
+            currentRoutName.current = getActiveRouteName(state);
+            // console.log(JSON.stringify(getActiveRouteName(state)));
+          }}
+          theme={theme == 'Light' ? DefaultTheme : DarkTheme}>
+          <Drawer.Navigator
+            drawerContent={props => <DrawerView {...props} />}
+            screenOptions={{headerShown: false}}>
+            <Drawer.Screen name="StackNavigation" component={StackNavigation} />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+      {/* <StatusBar translucent={true} /> */}
     </ThemeContext.Provider>
   );
 }

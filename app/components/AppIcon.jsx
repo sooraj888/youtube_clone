@@ -9,7 +9,7 @@ const AppIcon = ({width, height, marginLeft = 0, scale}) => {
         width: width,
         height: height,
         marginLeft: marginLeft,
-        transform: [{scale: 1}],
+        transform: [{scale: scale}],
       }}
       resizeMode="center"
     />

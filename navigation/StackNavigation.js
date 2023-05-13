@@ -8,14 +8,12 @@ export default StackNavigation = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <>
-      <Stack.Navigator
-        initialRouteName="MainScreen"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="MainScreen" component={BottomNavigation} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </>
+    <Stack.Navigator
+      initialRouteName="MainScreen"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="MainScreen" component={BottomNavigation} />
+      {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+    </Stack.Navigator>
   );
 };
 
