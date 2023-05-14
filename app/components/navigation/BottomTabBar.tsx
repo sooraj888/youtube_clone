@@ -13,7 +13,7 @@ import {
   useLinkBuilder,
   useTheme,
 } from '@react-navigation/native';
-import React, {createRef, useRef} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 import {
   Alert,
   Animated,
@@ -36,7 +36,7 @@ import {EdgeInsets, useSafeAreaFrame} from 'react-native-safe-area-context';
 import useIsKeyboardShown from '@react-navigation/bottom-tabs/src/utils/useIsKeyboardShown';
 import BottomTabItem from '@react-navigation/bottom-tabs/src/views/BottomTabItem';
 import DeviceInfo from 'react-native-device-info';
-import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
+import {WINDOW_HEIGHT, WINDOW_WIDTH} from '@gorhom/bottom-sheet';
 import VideoScreen from './VideoScreen';
 
 export const videoScrenRef = createRef();
@@ -270,28 +270,40 @@ export default function BottomTabBar({
   });
 
   const tabBarBackgroundElement = tabBarBackground?.();
-  // const heightAnimation = useRef(new Animated.Value(50)).current;
+  // const heightAnimation = useRef(new Animated.Value(55)).current;
   const StatusBarHeight = StatusBar?.currentHeight || 0;
+  const [vidoScreenOpend, setVidoScreenOpend] = useState(false);
+
   return (
     <>
-      <SafeAreaView />
       <Animated.View
+        onLayout={e => {
+          if (e.nativeEvent.layout.y == 0) {
+            setVidoScreenOpend(false);
+          } else {
+            setVidoScreenOpend(true);
+          }
+        }}
         ref={videoScrenRef}
         style={{
           position: 'absolute',
           left: 0,
           right: 0,
           bottom: heightAnimation.interpolate({
-            inputRange: [50, WINDOW_HEIGHT],
+            inputRange: [55, WINDOW_HEIGHT],
             outputRange: [tabBarHeight, 0],
           }),
           height: heightAnimation,
           backgroundColor: 'rgba(0,0,0,0.6)',
-          borderWidth: 5,
-          borderColor: 'yellow',
+          // borderWidth: 5,
+          // borderColor: 'yellow',
+          overflow: 'hidden',
+          display: 'none',
         }}>
-        {/* Dimensions.get('window').height - tabBarHeight */}
-        <VideoScreen heightAnimation={heightAnimation} />
+        <VideoScreen
+          heightAnimation={heightAnimation}
+          vidoScreenOpend={vidoScreenOpend}
+        />
       </Animated.View>
       <Animated.View
         style={[
@@ -321,8 +333,9 @@ export default function BottomTabBar({
             transform: [
               {
                 translateY: heightAnimation.interpolate({
-                  inputRange: [50, WINDOW_HEIGHT],
+                  inputRange: [0, 55, WINDOW_WIDTH],
                   outputRange: [
+                    0,
                     0,
                     layout.height + paddingBottom + StyleSheet.hairlineWidth,
                   ],

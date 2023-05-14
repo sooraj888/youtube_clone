@@ -132,6 +132,7 @@ const HomeScreenHeader = ({isPageFocused}) => {
             flex: 1,
             paddingBottom: 120,
             alignItems: 'center',
+            backgroundColor: 'yellow',
           }}>
           {new Array(50).fill(' ').map((item, index) => {
             const value = (index + 1) * (slectedGenre + 1) * 10;
@@ -147,7 +148,7 @@ const HomeScreenHeader = ({isPageFocused}) => {
                     toValue:
                       Dimensions.get('window').height -
                       (StatusBarHeight >= 30 ? 0 : StatusBarHeight),
-                    duration: 500,
+                    duration: 0,
                     useNativeDriver: false,
                   }).start();
                   // Alert.alert();

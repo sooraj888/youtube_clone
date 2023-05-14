@@ -76,7 +76,6 @@ function App() {
           </Drawer.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
-      {/* <StatusBar translucent={true} /> */}
     </ThemeContext.Provider>
   );
 }
