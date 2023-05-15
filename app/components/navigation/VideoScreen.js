@@ -9,25 +9,42 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 import {videoScrenRef} from './BottomTabBar';
 import {useSelector} from 'react-redux';
 import Video from 'react-native-video';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import TEST_VIDEO from '../../assets/test.mp4';
 
-export default function VideoScreen({heightAnimation, vidoScreenOpend}) {
+export const videoPlayerRef = createRef();
+export default function VideoScreen({
+  heightAnimation,
+  vidoScreenCurrentState,
+  setVidoScreenCurrentState,
+}) {
   const addedValue = useSelector(state => state?.reducer);
   const StatusBarHeight = StatusBar?.currentHeight || 0;
 
+  const [paused, setPaused] = useState(false);
+
+  const lastVideoId = useRef('');
+
   useEffect(() => {
-    console.log(vidoScreenOpend);
-    if (vidoScreenOpend) {
-      handlePlayPause(false);
+    console.log(vidoScreenCurrentState);
+    if (
+      vidoScreenCurrentState != 'closed' &&
+      addedValue != null &&
+      addedValue != undefined
+    ) {
+      if (addedValue != lastVideoId.current) {
+        handlePlayPause(false);
+      }
+      lastVideoId.current = addedValue;
     } else {
       handlePlayPause(true);
     }
-  }, [vidoScreenOpend]);
+  }, [vidoScreenCurrentState, addedValue]);
 
   const closeVideoScreen = () => {
     handlePlayPause(true);
@@ -52,14 +69,12 @@ export default function VideoScreen({heightAnimation, vidoScreenOpend}) {
       useNativeDriver: false,
     }).start();
   };
-  const videoPlayerRef = useRef();
-
-  const [paused, setPaused] = useState(true);
 
   const handlePlayPause = isPause => {
     setPaused(isPause);
     videoPlayerRef?.current?.setNativeProps?.({paused: isPause});
   };
+
   return (
     <View
       style={{
@@ -73,10 +88,7 @@ export default function VideoScreen({heightAnimation, vidoScreenOpend}) {
         <Animated.View
           style={{
             width: heightAnimation.interpolate({
-              inputRange: [
-                55,
-                Dimensions.get('window').height - StatusBar?.currentHeight,
-              ],
+              inputRange: [55, 300],
               outputRange: [100, Dimensions.get('window').width],
               extrapolateLeft: 'clamp',
               extrapolateRight: 'clamp',
@@ -87,10 +99,9 @@ export default function VideoScreen({heightAnimation, vidoScreenOpend}) {
             ref={videoPlayerRef}
             repeat={true}
             resizeMode={'contain'}
-            source={{
-              uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-            }} // Can be a URL or a local file.
+            source={TEST_VIDEO} // Can be a URL or a local file.
             style={{width: '100%', aspectRatio: 16 / 9}}
+            paused={true}
           />
         </Animated.View>
         <View
@@ -156,9 +167,13 @@ export default function VideoScreen({heightAnimation, vidoScreenOpend}) {
           onPress={() => {
             Animated.timing(heightAnimation, {
               toValue: 55,
-              duration: 500,
+              duration: 0,
               useNativeDriver: false,
-            }).start();
+            }).start(({finished}) => {
+              if (finished) {
+                setVidoScreenCurrentState('minimized');
+              }
+            });
           }}
           title="mnimiz"></Button>
       </View>

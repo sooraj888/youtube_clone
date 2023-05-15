@@ -17,6 +17,7 @@ import GenreHeader from './GenreHeader';
 import {add, getSagaList} from '../redux/action';
 import {useDispatch} from 'react-redux';
 import {heightAnimation, videoScrenRef} from './navigation/BottomTabBar';
+import {videoPlayerRef} from './navigation/VideoScreen';
 
 const HomeScreenHeader = ({isPageFocused}) => {
   const StatusBarHeight = StatusBar?.currentHeight || 0;
@@ -150,7 +151,13 @@ const HomeScreenHeader = ({isPageFocused}) => {
                       (StatusBarHeight >= 30 ? 0 : StatusBarHeight),
                     duration: 0,
                     useNativeDriver: false,
-                  }).start();
+                  }).start(({finished}) => {
+                    if (finished) {
+                      videoPlayerRef?.current?.setNativeProps?.({
+                        paused: false,
+                      });
+                    }
+                  });
                   // Alert.alert();
                 }}>
                 <Text>{value}</Text>

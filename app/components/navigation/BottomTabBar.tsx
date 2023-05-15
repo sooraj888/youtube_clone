@@ -10,6 +10,7 @@ import {
   NavigationRouteContext,
   ParamListBase,
   TabNavigationState,
+  useFocusEffect,
   useLinkBuilder,
   useTheme,
 } from '@react-navigation/native';
@@ -17,6 +18,7 @@ import React, {createRef, useEffect, useRef, useState} from 'react';
 import {
   Alert,
   Animated,
+  BackHandler,
   Button,
   Dimensions,
   LayoutChangeEvent,
@@ -272,16 +274,47 @@ export default function BottomTabBar({
   const tabBarBackgroundElement = tabBarBackground?.();
   // const heightAnimation = useRef(new Animated.Value(55)).current;
   const StatusBarHeight = StatusBar?.currentHeight || 0;
-  const [vidoScreenOpend, setVidoScreenOpend] = useState(false);
+  const [vidoScreenCurrentState, setVidoScreenCurrentState] =
+    useState('closed');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (vidoScreenCurrentState == 'open') {
+          Animated.timing(heightAnimation, {
+            toValue: 55,
+            duration: 0,
+            useNativeDriver: false,
+          }).start(({finished}) => {
+            if (finished) {
+              setVidoScreenCurrentState('minimized');
+            }
+          });
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => subscription.remove();
+    }, [vidoScreenCurrentState]),
+  );
 
   return (
     <>
       <Animated.View
         onLayout={e => {
-          if (e.nativeEvent.layout.y == 0) {
-            setVidoScreenOpend(false);
-          } else {
-            setVidoScreenOpend(true);
+          if (e.nativeEvent.layout.height == 0) {
+            setVidoScreenCurrentState('closed');
+          } else if (e.nativeEvent.layout.height == 55) {
+            setVidoScreenCurrentState('minimized');
+          } else if (e.nativeEvent.layout.height > 55) {
+            setVidoScreenCurrentState('open');
           }
         }}
         ref={videoScrenRef}
@@ -302,7 +335,8 @@ export default function BottomTabBar({
         }}>
         <VideoScreen
           heightAnimation={heightAnimation}
-          vidoScreenOpend={vidoScreenOpend}
+          vidoScreenCurrentState={vidoScreenCurrentState}
+          setVidoScreenCurrentState={setVidoScreenCurrentState}
         />
       </Animated.View>
       <Animated.View

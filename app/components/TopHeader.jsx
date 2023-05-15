@@ -7,16 +7,20 @@ import {
   Text,
   Alert,
   Image,
+  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AppIcon from './AppIcon';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 const TopHeader = () => {
   const addedValue = useSelector(state => state?.reducer);
   console.log(JSON.stringify(addedValue));
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -105,19 +109,25 @@ const TopHeader = () => {
               alignItems: 'center',
             },
           ]}>
-          <View
-            style={[
-              {
-                backgroundColor: 'green',
-                width: 25,
-                height: 25,
-                borderRadius: 30,
-              },
-              styles.center,
-            ]}>
-            {/* <Text style={{color: 'white', fontSize: 12}}>S</Text> */}
-            <Text style={{color: 'white', fontSize: 12}}>{addedValue}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation?.navigate('Profile');
+            }}>
+            <View
+              style={[
+                {
+                  backgroundColor: 'green',
+                  width: 25,
+                  height: 25,
+                  borderRadius: 30,
+                },
+                styles.center,
+              ]}>
+              {/* <Text style={{color: 'white', fontSize: 12}}>S</Text> */}
+
+              <Text style={{color: 'white', fontSize: 12}}>S</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
