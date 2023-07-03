@@ -11,6 +11,7 @@ import {
   Alert,
   Animated,
   Dimensions,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -32,7 +33,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ProfileScreen from './screens/bottomNavigation_screens/ProfileScreen';
 import HomeScreen from './screens/bottomNavigation_screens/HomeScreen';
 import BottomNavigation from './navigation/BottomNavigation';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import changeNavigationBarColor, {
+  hideNavigationBar,
+  showNavigationBar,
+} from 'react-native-navigation-bar-color';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import StackNavigation from './navigation/StackNavigation';
@@ -53,9 +57,12 @@ import {
   heightAnimation,
   videoScrenCurrentHeightRef,
 } from './app/components/navigation/BottomTabBar';
+import DeviceInfo from 'react-native-device-info';
+
+import AndroidNotch from 'react-native-android-notch';
 
 const Tab = createBottomTabNavigator();
-
+const statusBarHeight = StatusBar?.currentHeight || 0;
 function App() {
   const [theme, setTheme] = useState('Light');
   const themeData = {theme, setTheme};
@@ -83,19 +90,27 @@ function App() {
       console.log('Current orientation:', orientation);
       // StatusBar.setHidden(true);
       if (orientation == 'LANDSCAPE-LEFT') {
+        StatusBar.setTranslucent(true);
         if (videoScrenCurrentHeightRef > 55) {
           StatusBar.setHidden(true);
-          Orientation.lockToLandscapeLeft();
-        } else {
-          Orientation.lockToLandscapeLeft();
+
+          hideNavigationBar();
         }
+        Orientation.lockToLandscapeLeft();
       } else if (orientation == 'LANDSCAPE-RIGHT') {
+        StatusBar.setTranslucent(true);
         if (videoScrenCurrentHeightRef > 55) {
           StatusBar.setHidden(true);
+          hideNavigationBar();
         }
         Orientation.lockToLandscapeRight();
       } else if (orientation == 'PORTRAIT') {
+        showNavigationBar();
         StatusBar.setHidden(false);
+        // setTimeout(() => {
+        //   Orientation.lockToPortrait();
+        // }, 1000);
+
         Orientation.lockToPortrait();
       }
     };
@@ -115,17 +130,41 @@ function App() {
         console.warn('videoScrenCurrentHeightRef', videoScrenCurrentHeightRef);
         if (videoScrenCurrentHeightRef > 56) {
           Animated.timing(heightAnimation, {
-            toValue: Dimensions.get('screen').width,
-            duration: 1000,
+            toValue:
+              Dimensions.get('window').width < Dimensions.get('window').height
+                ? Dimensions.get('window').width
+                : Dimensions.get('window').height,
+            duration: 0,
             useNativeDriver: false,
           }).start();
-        } else {
-          // Orientation.lockToLandscapeLeft();
         }
       } else if (orientation == 'LANDSCAPE-RIGHT') {
-        if (videoScrenCurrentHeightRef > 55) {
+        if (videoScrenCurrentHeightRef > 56) {
+          Animated.timing(heightAnimation, {
+            toValue:
+              Dimensions.get('window').width < Dimensions.get('window').height
+                ? Dimensions.get('window').width
+                : Dimensions.get('window').height,
+
+            duration: 0,
+            useNativeDriver: false,
+          }).start();
         }
       } else if (orientation == 'PORTRAIT') {
+        if (videoScrenCurrentHeightRef > 56) {
+          Animated.timing(heightAnimation, {
+            toValue:
+              Dimensions.get('window').width -
+              (statusBarHeight >= 30 ? 0 : statusBarHeight),
+            // Dimensions.get('window').width > Dimensions.get('window').height
+            //   ? Dimensions.get('window').width
+            //   : Dimensions.get('window').height - statusBarHeight,
+            // (StatusBarHeight >= 30 ? 0 : StatusBarHeight),
+            delay: 500,
+            duration: 0,
+            useNativeDriver: false,
+          }).start();
+        }
       }
     };
 

@@ -60,7 +60,6 @@ const HomeScreenHeader = ({isPageFocused}) => {
         });
       }
     });
-    // Alert.alert();
   };
   //hooks
   useEffect(() => {

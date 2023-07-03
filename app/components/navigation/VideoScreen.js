@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaViewBase,
 } from 'react-native';
 import React, {createRef, useEffect, useRef, useState} from 'react';
 import {videoScrenRef} from './BottomTabBar';
@@ -19,6 +20,11 @@ import TEST_VIDEO from '../../assets/test.mp4';
 import Orientation from 'react-native-orientation-locker';
 import {hideNavigationBar} from 'react-native-navigation-bar-color';
 import {showNavigationBar} from 'react-native-navigation-bar-color';
+import {
+  SafeAreaFrameContext,
+  SafeAreaInsetsContext,
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 
 export const videoPlayerRef = createRef();
 export default function VideoScreen({
@@ -93,7 +99,12 @@ export default function VideoScreen({
 
     // Additional logic or actions based on the playback rate
   };
-
+  const sa = SafeAreaInsetsContext;
+  console.log('..........', sa);
+  const sc = SafeAreaFrameContext._currentValue;
+  console.log('>>>>>>>>>>>>>>>>>>', sc);
+  // const dim = Dimensions.get('screen');
+  // return dim.height >= dim.width;
   return (
     <View
       style={{
@@ -102,37 +113,50 @@ export default function VideoScreen({
         flexDirection: 'column',
 
         height: '100%',
-        backgroundColor: 'red',
       }}>
-      <View style={{display: 'flex', flexDirection: 'row'}}>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+
+          width: '100%',
+          overflow: 'hidden',
+        }}>
         <Animated.View
           style={{
             width: heightAnimation.interpolate({
               inputRange: [55, 100],
-              outputRange: [100, Dimensions.get('screen').width],
+              outputRange: [110, sc.width],
               extrapolateLeft: 'clamp',
               extrapolateRight: 'clamp',
             }),
             backgroundColor: 'black',
+            borderWidth: 2,
+            borderColor: 'blue',
           }}>
           <Video
             ref={videoPlayerRef}
             paused={true}
             repeat={true}
             resizeMode={'contain'}
-            // source={TEST_VIDEO} // Can be a URL or a local file.
-            source={{
-              // uri: 'http://youtube-clone-server-hmp3.onrender.com/video',
-              uri: 'http://192.168.29.45:3000/video',
+            source={TEST_VIDEO} // Can be a URL or a local file.
+            // source={{
+            //   // uri: 'http://youtube-clone-server-hmp3.onrender.com/video',
+            //   // uri: 'http://192.168.29.45:3000/video',
 
-              // uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-            }}
-            style={{width: '100%', aspectRatio: 16 / 8}}
-            // paused={true}
+            //   uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+            // }}
+            style={
+              Dimensions.get('screen').height >= Dimensions.get('screen').width
+                ? {
+                    width: '100%',
+                    aspectRatio: 16 / 8,
+                  }
+                : {width: '100%', height: '100%'}
+            }
             onProgress={handleProgress}
             onError={e => {
               console.log(e);
-              Alert.alert(JSON.stringify(e));
             }}
           />
         </Animated.View>
